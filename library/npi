@@ -1,0 +1,53 @@
+#!/bin/bash
+
+set -e
+
+# Ansible transports arguments to modules in a file. The
+# path to the arguments file is in $1, and the file
+# contains the module's arguments like this:
+#
+#       name="JP Mens" value=15 dest=/tmp/destfile
+#
+# This is a little dangerous (!?!), but I'm going to ask
+# the current shell to parse that file; it will set
+# variables accordingly.
+
+source ${1}  # Very, *very*, dangerous!
+
+[ -z "$state" ] && state=present
+
+CHANGED="false"
+
+case "$state" in
+    present)
+        if ! npi where $name >/dev/null ; then
+            npi install $name -syn >/dev/null
+            CHANGED="true"
+        fi
+
+        if [ -n "$config" ]; then
+            CONFIG_FILE="`npi where $name`/config/plugin.json"
+            OLDMD5=`md5sum "$CONFIG_FILE"`
+            cat > $CONFIG_FILE <<< "$config"
+            NEWMD5=`md5sum "$CONFIG_FILE"`
+            if [ "$OLDMD5" != "$NEWMD5" ] ; then
+                npi stop $name
+                npi start $name
+                CHANGED="true"
+            fi
+        fi
+        ;;
+    absent)
+        if npi where $name >/dev/null ; then
+            npi remove-service $name
+            npi remove $name -y
+            CHANGED="true"
+        fi
+        ;;
+    *)
+        echo '{"error": "Wrong state value: '"$state"'"}'
+        exit 1
+        ;;
+esac
+
+echo '{"changed": '$CHANGED'}'

@@ -1,0 +1,7 @@
+- name: run newrelic npi installer
+  shell: yes | LICENSE_KEY={{newrelic_license_key}} PREFIX=/opt/newrelic-npi bash -c "$(curl -sSL https://download.newrelic.com/npi/release/install-npi-linux-{{newrelic_npi_platform}}-{{newrelic_npi_arch}}.sh)"
+  args:
+    creates: /opt/newrelic-npi
+
+- name: create /usr/bin/npi
+  copy: src=../files/npi dest=/usr/bin/npi mode=0755
