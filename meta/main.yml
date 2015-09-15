@@ -2,9 +2,9 @@
 galaxy_info:
   author: Andrew Grigorev
   description: Installs the New Relic Platform Installer (npi) and adds npi ansible module
-  company: 
-  license: "BSD"
+  license: BSD
   min_ansible_version: 1.9
+  platforms:
   - name: Ubuntu
     versions:
     - all
