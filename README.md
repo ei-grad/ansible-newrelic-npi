@@ -35,14 +35,12 @@ Manages npi packages.
 #### Examples
 
 ```yaml
-# install mysql package
 - name: install newrelic mysql module
   hosts: mysql
   tasks:
   - npi: name=com.newrelic.plugins.mysql.instance state=present config='{"agents":[{"name":"My Ansible-managed database","host":"localhost","metrics":"status,newrelic","user":"","passwd":""}]}'
 
-# remove mysql package
-- name: install newrelic mysql module
+- name: remove newrelic mysql module
   hosts: mysql
   tasks:
   - npi: name=com.newrelic.plugins.mysql.instance state=absent
