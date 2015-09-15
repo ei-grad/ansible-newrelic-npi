@@ -13,18 +13,39 @@ newrelic_npi_platform: debian
 newrelic_npi_arch: x64
 ```
 
+### npi - Manages npi packages
 
-#### Module npi
+#### Synopsis
 
-Allows to install npi modules in Ansible tasks.
+Manages npi packages.
 
-Example usage:
+#### Requirements
+
+* Bash
+* npi (installed by newrelic-npi role)
+
+#### Options
+
+ parameter | required | default | choices        | comments
+ --------- | -------- | ------- | -------------- | -----------------------------------------------------------
+ name      | yes      |         |                | npi package name, ex. - com.newrelic.plugins.mysql.instance
+ state     | no       | present | present,absent | should the package be installed or removed
+ config    | no       |         |                | package.json config file contents
+
+#### Examples
 
 ```yaml
+# install mysql package
 - name: install newrelic mysql module
   hosts: mysql
   tasks:
-  - npi: name=com.newrelic.plugins.mysql.instance config='{"agents":[{"name":"Staging Database","host":"localhost","metrics":"status,newrelic","user":"","passwd":""}]}'
+  - npi: name=com.newrelic.plugins.mysql.instance state=present config='{"agents":[{"name":"My Ansible-managed database","host":"localhost","metrics":"status,newrelic","user":"","passwd":""}]}'
+
+# remove mysql package
+- name: install newrelic mysql module
+  hosts: mysql
+  tasks:
+  - npi: name=com.newrelic.plugins.mysql.instance state=absent
 
 ```
 
