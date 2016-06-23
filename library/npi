@@ -28,7 +28,11 @@ case "$state" in
         if [ -n "$config" ]; then
             CONFIG_FILE="`npi where $name`/config/plugin.json"
             OLDMD5=`md5sum "$CONFIG_FILE"`
-            cat > $CONFIG_FILE <<< "$config"
+            if [ -n "$config_file" ]; then
+                cp $config_file $CONFIG_FILE
+            else
+                cat > $CONFIG_FILE <<< "$config"
+            fi
             NEWMD5=`md5sum "$CONFIG_FILE"`
             if [ "$OLDMD5" != "$NEWMD5" ] ; then
                 npi stop $name
