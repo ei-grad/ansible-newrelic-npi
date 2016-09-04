@@ -28,9 +28,10 @@ Manages npi packages.
 
  parameter | required | default | choices        | comments
  --------- | -------- | ------- | -------------- | -----------------------------------------------------------
- name      | yes      |         |                | npi package name, ex. - com.newrelic.plugins.mysql.instance
- state     | no       | present | present,absent | should the package be installed or removed
- config    | no       |         |                | package.json config file contents
+ `name`      | yes      |         |                | npi package name, ex. - com.newrelic.plugins.mysql.instance
+ `state`     | no       | present | present,absent | should the package be installed or removed
+ `config`    | no       |         |                | package.json config file contents
+ `config_file` | no       |         |                | remote(!) file name to be used as package.json
 
 #### Examples
 
@@ -39,6 +40,12 @@ Manages npi packages.
   hosts: mysql
   tasks:
   - npi: name=com.newrelic.plugins.mysql.instance state=present config='{"agents":[{"name":"My Ansible-managed database","host":"localhost","metrics":"status,newrelic","user":"","passwd":""}]}'
+
+- name: install newrelic mysql module
+  hosts: mysql
+  tasks:
+  - template: src=package.json dest=/tmp/package.json
+  - npi: name=com.newrelic.plugins.mysql.instance state=present config_file=/tmp/package.json
 
 - name: remove newrelic mysql module
   hosts: mysql
