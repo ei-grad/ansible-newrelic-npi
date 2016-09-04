@@ -2,7 +2,7 @@
 Ansible role which installs New Relic Platform Installer (npi) and adds npi ansible module.
 
 #### Requirements & Dependencies
-- Tested on Ansible 1.9.
+- Tested on Ansible 1.9 and 2.1 (2.0 was broken).
 
 
 #### Variables
