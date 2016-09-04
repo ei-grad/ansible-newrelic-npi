@@ -35,23 +35,37 @@ Manages npi packages.
 
 #### Examples
 
+First - run this role to install the npi binary:
+
+```yaml
+- name: install newrelic npi
+  hosts: mysql
+  roles:
+  - newrelic-npi
+```
+
+Then you could use npi to install and remove newrelic modules:
+
 ```yaml
 - name: install newrelic mysql module
   hosts: mysql
   tasks:
   - npi: name=com.newrelic.plugins.mysql.instance state=present config='{"agents":[{"name":"My Ansible-managed database","host":"localhost","metrics":"status,newrelic","user":"","passwd":""}]}'
+```
 
-- name: install newrelic mysql module
+```yaml
+- name: install newrelic mysql module (using template module to pass package.json)
   hosts: mysql
   tasks:
   - template: src=package.json dest=/tmp/package.json
   - npi: name=com.newrelic.plugins.mysql.instance state=present config_file=/tmp/package.json
+```
 
+```yaml
 - name: remove newrelic mysql module
   hosts: mysql
   tasks:
   - npi: name=com.newrelic.plugins.mysql.instance state=absent
-
 ```
 
 #### License
