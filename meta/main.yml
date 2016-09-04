@@ -11,8 +11,9 @@ galaxy_info:
   - name: Debian
     versions:
     - all
-  categories:
+  galaxy_tags:
   - development
   - monitoring
   - system
+  - newrelic
 dependencies: []
